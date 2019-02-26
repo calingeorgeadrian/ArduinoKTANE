@@ -1,11 +1,14 @@
 # Keep Talking and Nobody Explodes - Arduino
 Our Arduino project for the Robotics course at our faculty: the bomb from Keep Talking And Nobody Explodes.  
-It is a 2-players game that requires good communication skills and a lot of patience.  
+The game can be played with a minumum of 2 players, with one player as the "Defuser" and the remaining players as the "Experts" reading the provided bomb defusal manual.    
+
+As designed, the Defuser cannot look at the manual and must rely on the Experts to instruct him or her; likewise, the Experts cannot see the bomb and must rely on the Defuser to describe the bomb to them. Communicating with each other occurs directly from across a table.
   
-The bomb has 4 different modules: Simon Says, Who's on First, Memory and The Button. Each one of these needs to be defused before the timer reaches zero in order for the bomb not to explode.  
-Also, the bomb explodes if the team does 3 mistakes. 
-  
-One person will be holding the bomb and the other one will be going through the manual in order to help the first one defuse the modules.
+The bomb consists of 4 modules: Simon Says, Who's on First, Memory and The Button. The modules are independent of each other and can be disarmed in any order. The modules require disarming, with the bomb successfully difused when all the modules are successfully disarmed.  
+
+The bomb also has a countdown timer that, if it hits zero, will cause the bomb to go off. It also has a maximum number of strikes resulting from errors made during defusing, and if that maximum is reached, the bomb will also go off.  
+
+The modules use complex instruction sets and puzzle-like elements to be solved; one module uses words that may be homophones of other similar words ("sees" to "seas") or be verbal tics ("uhhh" or "uh huh") that could easily be confused during communication between the Defuser and the Experts. Another module has multiple stages that require the Experts to keep track of past actions as they work through each stage. There's also a module that depends on the state of the bomb such as how many strikes it presently has, or other data on the bomb, like the serial number.
 
 ## Table of Contents
 **[1. Getting Started](#getting-started)**  
