@@ -30,7 +30,7 @@ In order for the code to work, you will need the following libraries:
 - SevenSegmentTM1637 - [link](https://github.com/bremme/arduino-tm1637)  
 - LedControl - [link](https://github.com/wayoda/LedControl)  
 - LiquidCrystal - [link](https://www.arduinolibraries.info/libraries/liquid-crystal)  
-- LiquidCrystal_I2C - [link](https://github.com/fdebrabander/Arduino-LiquidCrystal-I2C-library)
+- LiquidCrystal_I2C - [link](https://www.arduinolibraries.info/libraries/liquid-crystal-i2-c?fbclid=IwAR016eH4yHLd4HKqA-OcUghdO19ukQlUcGXE2mY0AUaA8aWecJZJvaQrt5E)
 - The files in this repository
 
 ### Installation
@@ -79,5 +79,5 @@ After following these steps, connect the Arduino board to your computer and uplo
 
 ## Credits
 
-* Thanks to [bremme](https://github.com/bremme), [wayoda](https://github.com/wayoda), and [fdebrabander](https://github.com/fdebrabander) for creating the open-source libraries we used
+* Thanks to [bremme](https://github.com/bremme) and [wayoda](https://github.com/wayoda) for creating the open-source libraries we used
 * Definetly check the game that inspired us, official website [here](https://keeptalkinggame.com/)
