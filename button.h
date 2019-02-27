@@ -1,21 +1,21 @@
 // The Button Module
-
+/* 
+I know there is a lot of repetitive code inside this but when I tried to
+refactor it, everything stopped working so I decided to keep it like this
+*/
 
 #define LCD_BUTTON_CONTRAST 40
-
-#define PIN_THE_BUTTON_LED_GREEN 19 //green led buton
-
-#define BTN_PIN 26 // buton mare
-
+#define PIN_THE_BUTTON_LED_GREEN 19
+#define BTN_PIN 26
 #define BUZZER_PIN 6
-#define BTN_RED_PIN 7
-#define BTN_GREEN_PIN 8
-#define BTN_BLUE_PIN 9
-#define STRIP_RED_PIN 10
-#define STRIP_GREEN_PIN 11
-#define STRIP_BLUE_PIN 12
- 
-#define lcdButton_V0_PIN 13
+#define LEFT_LED_RED_PIN 7
+#define LEFT_LED_GREEN_PIN 8
+#define LEFT_LED_BLUE_PIN 9
+#define RIGHT_LED_RED_PIN 10
+#define RIGHT_LED_GREEN_PIN 11
+#define RIGHT_LED_BLUE_PIN 12
+#define V0_PIN 13
+
 LiquidCrystal lcdButton(29, 27, 41, 43, 45, 47);
 
 int btnState = LOW;
@@ -23,15 +23,12 @@ int lastBtnState = LOW;
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelayButton = 50;
 int moduleFinished = 0;
-int btnColor;
-int stripColor;
+int leftLedColor;
+int rightLedColor;
 int btnWordGen;
-//int loops = 19920; //60 secunde a cate 166 loop-uri fiecare
-//int secondsButton = loops/166;
 
-
-
-void setColor (int redPin, int redValue, int greenPin, int greenValue, int bluePin, int blueValue) {
+void setColor (int redPin, int redValue, int greenPin, int greenValue, int bluePin, int blueValue) 
+{
   analogWrite(redPin, redValue);
   analogWrite(greenPin, greenValue);
   analogWrite(bluePin, blueValue);
@@ -39,8 +36,8 @@ void setColor (int redPin, int redValue, int greenPin, int greenValue, int blueP
 
 void buttonModuleDefusedPrint()
 { 
-   setColor(BTN_RED_PIN,0,BTN_GREEN_PIN,0,BTN_BLUE_PIN,0);
-   setColor(STRIP_RED_PIN,0,STRIP_GREEN_PIN,0,STRIP_BLUE_PIN,0);
+   setColor(LEFT_LED_RED_PIN, 0, LEFT_LED_GREEN_PIN, 0, LEFT_LED_BLUE_PIN, 0);
+   setColor(RIGHT_LED_RED_PIN, 0, RIGHT_LED_GREEN_PIN, 0, RIGHT_LED_BLUE_PIN, 0);
    buttonModuleDefused = true;
    if(whoModuleDefused && simonModuleDefused && memoryModuleDefused && buttonModuleDefused) 
     {
@@ -51,130 +48,135 @@ void buttonModuleDefusedPrint()
 
 void buttonModuleBoom()
 { 
-  setColor(BTN_RED_PIN,0,BTN_GREEN_PIN,0,BTN_BLUE_PIN,0);
-  setColor(STRIP_RED_PIN,0,STRIP_GREEN_PIN,0,STRIP_BLUE_PIN,0);
+  setColor(LEFT_LED_RED_PIN, 0, LEFT_LED_GREEN_PIN, 0, LEFT_LED_BLUE_PIN, 0);
+  setColor(RIGHT_LED_RED_PIN, 0, RIGHT_LED_GREEN_PIN, 0, RIGHT_LED_BLUE_PIN, 0);
   lcdButton.clear();
-  lcdButton.setCursor(6,0);
+  lcdButton.setCursor(6, 0);
   lcdButton.print("BOMB");
-  lcdButton.setCursor(4,1);
+  lcdButton.setCursor(4, 1);
   lcdButton.print("EXPLODED"); 
 }
 
-
-bool checkClock(int value){
-  //seconds = loops/166;
+bool checkClock(int value)
+{
   int timer = sec;
   while(timer >0)
   {
-    if(timer%10 == value)
+    if(timer % 10 == value)
     return 1;
-    timer = timer/10;
+    timer = timer / 10;
   }
 
   timer = mins;
   while(timer >0)
   {
-    if(timer%10 == value)
+    if(timer % 10 == value)
     return 1;
-    timer = timer/10;
+    timer = timer / 10;
   }
   
   return 0;
 }
 
 void printWord() {
-  switch(btnWordGen){
-    case 1: { //HOLD
-      lcdButton.setCursor(5,0);
+  switch(btnWordGen)
+  {
+    case 1: 
+    { //HOLD
+      lcdButton.setCursor(5, 0);
       lcdButton.print("HOLD");
     }
     break;
-    case 2: { //DETONATE
-      lcdButton.setCursor(4,0);
+    case 2: 
+    { //DETONATE
+      lcdButton.setCursor(4, 0);
       lcdButton.print("DETONATE");
     }
     break;
-    case 3: { //ABORT
-      lcdButton.setCursor(5,0);
+    case 3: 
+    { //ABORT
+      lcdButton.setCursor(5, 0);
       lcdButton.print("ABORT");
     }
     break;
   }
 }
 
-void printModuleDefused() {
+void printModuleDefused() 
+{
   buttonModuleDefusedPrint();
   lcdButton.clear();
-  lcdButton.setCursor(1,0);
+  lcdButton.setCursor(1, 0);
   lcdButton.print("MODULE DEFUSED");
-  lcdButton.setCursor(0,1);
+  lcdButton.setCursor(0, 1);
   lcdButton.print("Serial: ");
   lcdButton.print(serialCode);
 }
 
 void buttonSetup()
 {
-  //Serial.begin(9600);
-  pinMode(BTN_RED_PIN, OUTPUT);
-  pinMode(BTN_GREEN_PIN, OUTPUT);
-  pinMode(BTN_BLUE_PIN, OUTPUT);
-  pinMode(STRIP_RED_PIN, OUTPUT);
-  pinMode(STRIP_GREEN_PIN, OUTPUT);
-  pinMode(STRIP_BLUE_PIN, OUTPUT);
+  pinMode(LEFT_LED_RED_PIN, OUTPUT);
+  pinMode(LEFT_LED_GREEN_PIN, OUTPUT);
+  pinMode(LEFT_LED_BLUE_PIN, OUTPUT);
+  pinMode(RIGHT_LED_RED_PIN, OUTPUT);
+  pinMode(RIGHT_LED_GREEN_PIN, OUTPUT);
+  pinMode(RIGHT_LED_BLUE_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(BTN_PIN,INPUT);
-  pinMode(PIN_THE_BUTTON_LED_GREEN,OUTPUT);
-  pinMode(lcdButton_V0_PIN, OUTPUT);
+  pinMode(BTN_PIN, INPUT);
+  pinMode(PIN_THE_BUTTON_LED_GREEN, OUTPUT);
+  pinMode(V0_PIN, OUTPUT);
 
-  analogWrite(lcdButton_V0_PIN, LCD_BUTTON_CONTRAST);
-  lcdButton.begin(16,2);
+  analogWrite(V0_PIN, LCD_BUTTON_CONTRAST);
+  lcdButton.begin(16, 2);
 
   //generez un seed pentru a alege doua numere random cu ajutorul acestuia
   randomSeed(analogRead(0));
 
   //generam culorile pentru buton si pentru strip
-  btnColor = random(1,5);
-  stripColor = random(1,5);
-  btnWordGen = random(1,4);
-  switch(btnColor){
+  leftLedColor = random(1, 5);
+  rightLedColor = random(1, 5);
+  btnWordGen = random(1, 4);
+ 
+  switch(leftLedColor)
+  {
     case 1: {
-      setColor(BTN_RED_PIN,0,BTN_GREEN_PIN,0,BTN_BLUE_PIN,255);
+      setColor(LEFT_LED_RED_PIN, 0, LEFT_LED_GREEN_PIN, 0, LEFT_LED_BLUE_PIN, 255);
     }
     break;
     case 2: {
-      setColor(BTN_RED_PIN,255,BTN_GREEN_PIN,0,BTN_BLUE_PIN,0);
+      setColor(LEFT_LED_RED_PIN, 255, LEFT_LED_GREEN_PIN, 0, LEFT_LED_BLUE_PIN, 0);
     }
     break;
     case 3: {
-      setColor(BTN_RED_PIN,0,BTN_GREEN_PIN,255,BTN_BLUE_PIN,0);
+      setColor(LEFT_LED_RED_PIN, 0, LEFT_LED_GREEN_PIN, 255,LEFT_LED_BLUE_PIN, 0);
     }
     break;
     case 4: {
-      setColor(BTN_RED_PIN,255,BTN_GREEN_PIN,255,BTN_BLUE_PIN,255);
+      setColor(LEFT_LED_RED_PIN, 255, LEFT_LED_GREEN_PIN, 255, LEFT_LED_BLUE_PIN, 255);
     }
     break;
   }
-  switch(stripColor){
+  switch(rightLedColor){
     case 1: {
-      setColor(STRIP_RED_PIN,0,STRIP_GREEN_PIN,0,STRIP_BLUE_PIN,255);
+      setColor(STRIP_RED_PIN, 0, STRIP_GREEN_PIN, 0, STRIP_BLUE_PIN, 255);
     }
     break;
     case 2: {
-      setColor(STRIP_RED_PIN,255,STRIP_GREEN_PIN,0,STRIP_BLUE_PIN,0);
+      setColor(STRIP_RED_PIN, 255, STRIP_GREEN_PIN, 0, STRIP_BLUE_PIN, 0);
     }
     break;
     case 3: {
-      setColor(STRIP_RED_PIN,0,STRIP_GREEN_PIN,255,STRIP_BLUE_PIN,0);
+      setColor(STRIP_RED_PIN, 0, STRIP_GREEN_PIN, 255, STRIP_BLUE_PIN, 0);
     }
     break;
     case 4: {
-      setColor(STRIP_RED_PIN,255,STRIP_GREEN_PIN,255,STRIP_BLUE_PIN,255);
+      setColor(STRIP_RED_PIN, 255, STRIP_GREEN_PIN, 255, STRIP_BLUE_PIN, 255);
     }
     break;
   }
 
   printWord();
-  lcdButton.setCursor(0,1);
+  lcdButton.setCursor(0, 1);
   lcdButton.print("Serial: ");
   lcdButton.print(serialCode);
   
@@ -191,41 +193,13 @@ void buttonLoop()
 { 
   if(!buttonModuleDefused) 
   {
-    
-/*  loops--;
-  seconds = loops/166;
-  Serial.println(seconds);
-  */
-  
-  /*if(seconds>=100 && !moduleFinished)
-  {
-    lcdButton.setCursor(5,1);
-    lcdButton.print(seconds);
-  }
-  else if(seconds>=10 && !moduleFinished)
-  {
-    lcdButton.setCursor(5,1);
-    lcdButton.print(seconds);
-    lcdButton.print(" ");
-  }
-  else if(seconds>0 && !moduleFinished)
-  {
-    lcdButton.setCursor(5,1);
-    lcdButton.print(seconds);
-    lcdButton.print("  ");
-  }
-  else if(!moduleFinished)
-  {
-    lcdButton.setCursor(2,1);
-    lcdButton.print("TIME IS OVER");
-  }
-  */
   int reading = digitalRead(BTN_PIN);
   
   if(reading != lastBtnState)
   lastDebounceTime = millis();
   
-  switch(btnColor){
+  switch(leftLedColor)
+  {
     case 1: {// butonul are culoarea albastra
       if(btnWordGen == 3 && seconds > 0 && !moduleFinished){ //scrie Abort pe buton
         // press and imediately release
@@ -246,37 +220,42 @@ void buttonLoop()
           }
       }
       else if (seconds > 0 && !moduleFinished) //hold button
-        switch(stripColor){
-          case 1: {// strip-ul are culoarea albastra
+        switch(rightLedColor)
+        {
+          case 1: 
+          {// strip-ul are culoarea albastra
             //release when timer has a 4 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(4)){
+                  if(btnState == LOW && checkClock(4))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton albastru + Strip albastru");
                       defusedModuleBuzzer();
                       printModuleDefused();
                   }
-                    else if(btnState == LOW && !checkClock(4))
-                    {
-                      addStrike();
-                    }
+                  else if(btnState == LOW && !checkClock(4))
+                  {
+                    addStrike();
+                  }
                 }
             }
           }
           break;
-          case 2: {// strip-ul are culoarea rosie
+          case 2: 
+          {// strip-ul are culoarea rosie
             //release when timer has a 3 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(3)){
+                  if(btnState == LOW && checkClock(3))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton albastru + Strip rosu");
@@ -291,14 +270,16 @@ void buttonLoop()
             }
           }
           break;
-          case 3: {// strip-ul are culoarea verde
+          case 3: 
+          {// strip-ul are culoarea verde
             //release when timer has a 5 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(5)){
+                  if(btnState == LOW && checkClock(5))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton albastru + Strip verde");
@@ -313,14 +294,16 @@ void buttonLoop()
             }
           }
           break;
-          case 4: {// strip-ul are culoarea alba
+          case 4: 
+          {// strip-ul are culoarea alba
             //release when timer has a 1 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(1)){
+                  if(btnState == LOW && checkClock(1))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton albastru + Strip alb");
@@ -338,8 +321,10 @@ void buttonLoop()
         }
     }
     break;
-    case 2:{// butonul are culoarea rosie
-      if(btnWordGen == 1 && seconds > 0 && !moduleFinished){ //scrie Hold pe buton
+    case 2:
+    {// butonul are culoarea rosie
+      if(btnWordGen == 1 && seconds > 0 && !moduleFinished)
+      { //scrie Hold pe buton
         // press and imediately release
         if(millis() - lastDebounceTime > debounceDelayButton)
           {
@@ -358,15 +343,18 @@ void buttonLoop()
           }
       }
       else if(seconds > 0 && !moduleFinished) //hold button
-        switch(stripColor){
-          case 1: {// strip-ul are culoarea albastra
+        switch(rightLedColor)
+        {
+          case 1: 
+          {// strip-ul are culoarea albastra
             //release when timer has a 4 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(4)){
+                  if(btnState == LOW && checkClock(4))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton rosu + Strip albastru");
@@ -381,14 +369,16 @@ void buttonLoop()
             }
           }
           break;
-          case 2: {// strip-ul are culoarea rosie
+          case 2: 
+          {// strip-ul are culoarea rosie
             //release when timer has a 3 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(3)){
+                  if(btnState == LOW && checkClock(3))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton rosu + Strip rosu");
@@ -403,14 +393,16 @@ void buttonLoop()
             }
           }
           break;
-          case 3: {// strip-ul are culoarea verde
+          case 3: 
+          {// strip-ul are culoarea verde
             //release when timer has a 5 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(5)){
+                  if(btnState == LOW && checkClock(5))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton rosu + Strip verde");
@@ -425,14 +417,16 @@ void buttonLoop()
             }
           }
           break;
-          case 4: {// strip-ul are culoarea alba
+          case 4: 
+          {// strip-ul are culoarea alba
             //release when timer has a 1 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(1)){
+                  if(btnState == LOW && checkClock(1))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton rosu + Strip alb");
@@ -450,8 +444,10 @@ void buttonLoop()
         }
     }
     break;
-    case 3:{// butonul are culoarea verde
-      if(btnWordGen == 2 && seconds > 0 && !moduleFinished){ //scrie Detonate pe buton
+    case 3:
+    {// butonul are culoarea verde
+      if(btnWordGen == 2 && seconds > 0 && !moduleFinished)
+      { //scrie Detonate pe buton
         // press and imediately release
         if(millis() - lastDebounceTime > debounceDelayButton)
           {
@@ -470,15 +466,18 @@ void buttonLoop()
           }
       }
       else if(seconds > 0 && !moduleFinished) //hold button
-        switch(stripColor){
-          case 1: {// strip-ul are culoarea albastra
+        switch(rightLedColor)
+        {
+          case 1: 
+          {// strip-ul are culoarea albastra
             //release when timer has a 4 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(4)){
+                  if(btnState == LOW && checkClock(4))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton verde + Strip albastru");
@@ -493,14 +492,16 @@ void buttonLoop()
             }
           }
           break;
-          case 2: {// strip-ul are culoarea rosie
+          case 2: 
+          {// strip-ul are culoarea rosie
             //release when timer has a 3 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(3)){
+                  if(btnState == LOW && checkClock(3))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton verde + Strip rosu");
@@ -515,14 +516,16 @@ void buttonLoop()
             }
           }
           break;
-          case 3: {// strip-ul are culoarea verde
+          case 3: 
+          {// strip-ul are culoarea verde
             //release when timer has a 5 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(5)){
+                  if(btnState == LOW && checkClock(5))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton verde + Strip verde");
@@ -537,14 +540,16 @@ void buttonLoop()
             }
           }
           break;
-          case 4: {// strip-ul are culoarea alba
+          case 4: 
+          {// strip-ul are culoarea alba
             //release when timer has a 1 in any position
             if(millis() - lastDebounceTime > debounceDelayButton)
             {
                 if(reading != btnState)
                 {
                   btnState = reading;
-                  if(btnState == LOW && checkClock(1)){
+                  if(btnState == LOW && checkClock(1))
+                  {
                       moduleFinished = 1;
                       digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                       Serial.println("VALIDAT: Buton verde + Strip alb");
@@ -562,17 +567,21 @@ void buttonLoop()
         }
     }
     break;
-    case 4:{// butonul are culoarea alba
+    case 4:
+    {// butonul are culoarea alba
         if(seconds > 0 && !moduleFinished)
-          switch(stripColor){
-            case 1: {// strip-ul are culoarea albastra
+          switch(rightLedColor)
+          {
+            case 1: 
+            {// strip-ul are culoarea albastra
               //release when timer has a 4 in any position
               if(millis() - lastDebounceTime > debounceDelayButton)
               {
                   if(reading != btnState)
                   {
                     btnState = reading;
-                    if(btnState == LOW && checkClock(4)){
+                    if(btnState == LOW && checkClock(4))
+                    {
                         moduleFinished = 1;
                         digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                         Serial.println("VALIDAT: Buton alb + Strip albastru");
@@ -587,14 +596,16 @@ void buttonLoop()
               }
             }
             break;
-            case 2: {// strip-ul are culoarea rosie
+            case 2: 
+            {// strip-ul are culoarea rosie
               //release when timer has a 3 in any position
               if(millis() - lastDebounceTime > debounceDelayButton)
               {
                   if(reading != btnState)
                   {
                     btnState = reading;
-                    if(btnState == LOW && checkClock(3)){
+                    if(btnState == LOW && checkClock(3))
+                    {
                         moduleFinished = 1;
                         digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                         Serial.println("VALIDAT: Buton alb + Strip rosu");
@@ -609,14 +620,16 @@ void buttonLoop()
               }
             }
             break;
-            case 3: {// strip-ul are culoarea verde
+            case 3: 
+            {// strip-ul are culoarea verde
               //release when timer has a 5 in any position
               if(millis() - lastDebounceTime > debounceDelayButton)
               {
                   if(reading != btnState)
                   {
                     btnState = reading;
-                    if(btnState == LOW && checkClock(5)){
+                    if(btnState == LOW && checkClock(5))
+                    {
                         moduleFinished = 1;
                         digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                         Serial.println("VALIDAT: Buton alb + Strip verde");
@@ -631,14 +644,16 @@ void buttonLoop()
               }
             }
             break;
-            case 4: {// strip-ul are culoarea alba
+            case 4: 
+            {// strip-ul are culoarea alba
               //release when timer has a 1 in any position
               if(millis() - lastDebounceTime > debounceDelayButton)
               {
                   if(reading != btnState)
                   {
                     btnState = reading;
-                    if(btnState == LOW && checkClock(1)){
+                    if(btnState == LOW && checkClock(1))
+                    {
                         moduleFinished = 1;
                         digitalWrite(PIN_THE_BUTTON_LED_GREEN, HIGH);
                         Serial.println("VALIDAT: Buton alb + Strip alb");
