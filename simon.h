@@ -220,10 +220,7 @@ void ledAnimation()
     buttonsPressed = 0;
           
   if(currentLed < ledsNumber)
-  {
-    blinkLed(ledPins[ledSequence[currentLed] - 1]
-    ledStates[ledSequence[currentLed] - 1]);
-  }
+    blinkLed(ledPins[ledSequence[currentLed]-1], ledStates[ledSequence[currentLed]-1]);
   else
   {
     if(currentLed == ledsNumber) 
