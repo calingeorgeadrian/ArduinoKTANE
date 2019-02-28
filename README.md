@@ -4,13 +4,13 @@ The game can be played with a minumum of 2 players, with one player as the "Defu
 
 As designed, the Defuser cannot look at the manual and must rely on the Experts to instruct him or her; likewise, the Experts cannot see the bomb and must rely on the Defuser to describe the bomb to them. Communicating with each other occurs directly from across a table.
   
-The bomb consists of 4 modules: Simon Says, Who's on First, Memory and The Button. The modules are independent of each other and can be disarmed in any order. The modules require disarming, with the bomb successfully difused when all the modules are successfully disarmed.  
+The bomb consists of 4 modules: Simon Says, Who's on First, Memory and The Button. The modules are independent of each other and can be disarmed in any order. The only way to defuse the bomb is to defuse all of its modules before its countdown timer expires.  
 
 The bomb also has a countdown timer that, if it hits zero, will cause the bomb to go off. It also has a maximum number of strikes resulting from errors made during defusing, and if that maximum is reached, the bomb will also go off.  
 
 The modules use complex instruction sets and puzzle-like elements to be solved; one module uses words that may be homophones of other similar words ("sees" to "seas") or be verbal tics ("uhhh" or "uh huh") that could easily be confused during communication between the Defuser and the Experts. Another module has multiple stages that require the Experts to keep track of past actions as they work through each stage. There's also a module that depends on the state of the bomb such as how many strikes it presently has, or other data on the bomb, like the serial number.  
 
-You can find the bomb defusal manual here: [link](https://ema1ih.github.io/ArduinoKTANE-Manual/)
+You can find the bomb defusal manual [here](https://ema1ih.github.io/ArduinoKTANE-Manual/) and the video [here](https://youtu.be/zdycmzsBQvo).
 
 ## Table of Contents
 **[1. Getting Started](#getting-started)**  
