@@ -52,6 +52,14 @@ int buttonsPressed = 0;
 
 int beforeAnimationDelay = 1000;
 
+// the setup for Simon when it's already defused
+void defusedSimonSetup() 
+{
+  simonModuleDefused = true;
+  pinMode(PIN_SIMON_LED_GREEN, OUTPUT);
+  digitalWrite(PIN_SIMON_LED_GREEN, HIGH);
+}
+
 // function that shuts down the leds after the module is finished
 void simonModuleBoom()
 { 
